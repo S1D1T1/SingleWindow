@@ -37,7 +37,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     var myWin:NSWindow
     var showString:String
     var hideString:String
-    var isOpen = false
+    public var isOpen = false
     var shortcut:KeyEquivalent?
 
     init(title: String, external:Bool = false, shortcutString:String? = nil, rect:NSRect = defaultRect) {
