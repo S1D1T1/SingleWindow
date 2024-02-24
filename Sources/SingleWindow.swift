@@ -104,6 +104,8 @@ class iPadWindowRep {
 public struct SingleWindowMenuList : View {
     @State var windowList = SingleWindowList.shared
 
+  public init(){}
+
   public var body: some View {
         ForEach(windowList.all, id: \.self) { aWin in
             if let short = aWin.shortcut {
