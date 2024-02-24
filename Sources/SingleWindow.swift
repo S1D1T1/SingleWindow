@@ -67,7 +67,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     }
 
     /// this is distinct from the title  used in the Show/ Hide Menu
-    func setWindowTitle(_ title:String){
+    public func setWindowTitle(_ title:String){
 
         myWin.title = title
     }
@@ -87,7 +87,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 }
 #elseif os(iOS)
 class iPadWindowRep {
-    func setWindowTitle(_ s:String){}
+    public func setWindowTitle(_ s:String){}
     var isOpen = true
 }
 #endif
