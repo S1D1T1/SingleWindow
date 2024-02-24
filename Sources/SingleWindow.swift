@@ -96,15 +96,15 @@ class iPadWindowRep {
 
 
 @Observable
-public class SingleWindowList {
+ class SingleWindowList {
     static var shared = SingleWindowList()
     var all:[SingleWindow] = []
 }
 
-struct SingleWindowMenuList : View {
+public struct SingleWindowMenuList : View {
     @State var windowList = SingleWindowList.shared
 
-    var body: some View {
+  public var body: some View {
         ForEach(windowList.all, id: \.self) { aWin in
             if let short = aWin.shortcut {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
