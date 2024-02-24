@@ -101,12 +101,16 @@ class iPadWindowRep {
     var all:[SingleWindow] = []
 }
 
-public struct SingleWindowMenuList : View {
+
+public func SingleWindowMenuList()-> some View {
+  return SingleWindowListView()
+}
+
+ struct SingleWindowListView : View {
     @State var windowList = SingleWindowList.shared
 
-  public init(){}
 
-  public var body: some View {
+   var body: some View {
         ForEach(windowList.all, id: \.self) { aWin in
             if let short = aWin.shortcut {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
