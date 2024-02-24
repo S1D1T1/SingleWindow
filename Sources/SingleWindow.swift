@@ -9,7 +9,7 @@ import Foundation
 import AppKit
 import SwiftUI
 
-let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
+public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
 // possibly useful options:
 
@@ -57,7 +57,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     }
 
     /// intercept a system close action to just hide
-    func windowWillClose(_ notification: Notification) {
+    public func windowWillClose(_ notification: Notification) {
         close()
     }
 
