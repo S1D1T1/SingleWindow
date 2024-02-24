@@ -21,7 +21,7 @@ let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 //        self.init(window: window)
 
 
-func makeSingleWindow<V:View>(title: String,
+public func makeSingleWindow<V:View>(title: String,
                               external:Bool = false,
                               shortcutString:String? = nil,
                               rect:NSRect = defaultRect,
@@ -32,7 +32,7 @@ func makeSingleWindow<V:View>(title: String,
 }
 
 @Observable
-class SingleWindow : NSObject, NSWindowDelegate {
+public class SingleWindow : NSObject, NSWindowDelegate {
     var title:String
     var myWin:NSWindow
     var showString:String
@@ -96,7 +96,7 @@ class iPadWindowRep {
 
 
 @Observable
-class SingleWindowList {
+public class SingleWindowList {
     static var shared = SingleWindowList()
     var all:[SingleWindow] = []
 }
