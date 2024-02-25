@@ -18,8 +18,8 @@ import SwiftUI
 ///
 /// - Parameters:
 ///   - title: The title which appears in the Title bar, and the "Window" menu.
-///   - external: If true, attempt to place on the external screen if it exists.
-///   - shortcutString: A single character string, containing the keyboard shortcut for its item in the Window menu
+///   - external: If true, place on the external screen if it exists.
+///   - shortcutString: A string of one character, with the keyboard shortcut for its item in the Window menu. Ie, "0" means Command-0 toggles the window
 ///   - rect: window's bounding rectangle
 ///   - content: the View hosted by the window
 ///
