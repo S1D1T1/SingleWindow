@@ -41,9 +41,7 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
 /// SingleWindow Class
 ///
-///   ### public methods
-/// - `open()`
-/// - `close()`
+///   ### heading
 ///
 
 @Observable
@@ -100,7 +98,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
   ///     if window is visible, but not in front, then bring it front. ie, not strictly a visibility toggle
   ///     but this feels like it matches the user's intent
   ///
-  func showHideMenuCommand() {
+  func toggleVisibility() {
     let isKeyWindow = NSApp.keyWindow === myWin
 
     if myWin.isVisible && isKeyWindow {
@@ -140,13 +138,13 @@ struct SingleWindowListView : View {
         ForEach(windowList.all, id: \.self) { aWin in
             if let short = aWin.shortcut {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
-                    aWin.showHideMenuCommand()
+                    aWin.toggleVisibility()
                 }
                 .keyboardShortcut(short)
             }
             else {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
-                    aWin.showHideMenuCommand()
+                    aWin.toggleVisibility()
                 }
             }
         }
