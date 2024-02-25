@@ -1,9 +1,10 @@
-//  SingleWindow.swift
+//
+// SingleWindow.swift
 //
 //  2/7/24.
 //
 // part of what may become a general utility library for swiftui, focused on
-// clean simple API which address common usage
+// clean simple API, for normies
 //
 
 
@@ -13,6 +14,18 @@ import SwiftUI
 
 /// makeSingleWindow
 ///
+/// Create a MacOS window containing a SwiftUI view
+///
+/// - Parameters:
+///   - title: The title which appears in the Title bar, and the "Window" menu.
+///   - external: If true, attempt to place on the external screen if it exists.
+///   - shortcutString: A single character string, containing the keyboard shortcut for its item in the Window menu
+///   - rect: window's bounding rectangle
+///   - content: the View hosted by the window
+///
+/// - Returns: a SingleWindow. 
+///
+
 public func makeSingleWindow<V:View>(title: String,
                               external:Bool = false,
                               shortcutString:String? = nil,
@@ -23,8 +36,16 @@ public func makeSingleWindow<V:View>(title: String,
     return window
 }
 
+
 public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
+
+/// SingleWindow Class
+///
+///   ### public methods
+/// - `open()`
+/// - `close()`
+///
 
 @Observable
 public class SingleWindow : NSObject, NSWindowDelegate {
@@ -51,12 +72,10 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     SingleWindowList.shared.all.append(self)
   }
 
-
   /// intercept a system close action . hide instead
   public func windowWillClose(_ notification: Notification) {
     close()
   }
-
 
   // MARK: Public API
 
@@ -72,7 +91,6 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 
   /// this is distinct from the title  used in the Show/ Hide Menu
   public func setWindowTitle(_ title:String){
-
     myWin.title = title
   }
 
