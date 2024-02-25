@@ -7,7 +7,6 @@
 //
 
 
-#if os(macOS)
 import Foundation
 import AppKit
 import SwiftUI
@@ -61,6 +60,10 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 
   // MARK: Public API
 
+  public func open(){
+    self.isOpen = true
+    myWin.makeKeyAndOrderFront(nil)
+  }
 
   public func close(){
     myWin.orderOut(nil)
@@ -71,12 +74,6 @@ public class SingleWindow : NSObject, NSWindowDelegate {
   public func setWindowTitle(_ title:String){
 
     myWin.title = title
-  }
-
-
-  public func open(){
-    self.isOpen = true
-    myWin.makeKeyAndOrderFront(nil)
   }
 
   // MARK: Internal
@@ -97,14 +94,6 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     }
   }
 }
-#elseif os(iOS)
-class iPadWindowRep {
-    public func setWindowTitle(_ s:String){}
-    var isOpen = true
-}
-#endif
-
-#if os(macOS)
 
 
 @Observable
@@ -183,4 +172,3 @@ func makeWindow(with title: String, external:Bool = false, rect:NSRect = default
     }
     return window
 }
-#endif
