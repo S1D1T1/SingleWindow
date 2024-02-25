@@ -19,11 +19,11 @@ import SwiftUI
 /// - Parameters:
 ///   - title: The title which appears in the Title bar, and the "Window" menu.
 ///   - external: If true, place on the external screen if it exists.
-///   - shortcutString: A string of one character, with the keyboard shortcut for its item in the Window menu. Ie, "0" means Command-0 toggles the window
+///   - shortcutString: A one character string with the keyboard shortcut for its  menu item. Ie, "0" means Command-0 toggles the window
 ///   - rect: window's bounding rectangle
 ///   - content: the View hosted by the window
 ///
-/// - Returns: a SingleWindow. 
+/// - Returns: a SingleWindow object
 ///
 
 public func makeSingleWindow<V:View>(title: String,
@@ -35,7 +35,6 @@ public func makeSingleWindow<V:View>(title: String,
     window.myWin.contentView = NSHostingView(rootView: content())
     return window
 }
-
 
 public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
@@ -120,21 +119,21 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     var all:[SingleWindow] = []
 }
 
-///  Create a Hide <Window Name> / Show <Window Name> Menu item for toggling window viz
-///   To put in the Mac "Window" menu, do like this :
+///  Create a Hide <Window Name> / Show <Window Name> Menu item for toggling window visibility
 ///
+///   To put in the Mac "Window" menu, do like this :
+/// ```
 ///           CommandGroup(before: .singleWindowList){
 ///             SingleWindowMenuList()
 ///             }
-
-
-// This is a func returning the View, instead of the View itself, only because of public/ private stuff.
-// making the view public drags a bunch of other stuff along with it.
+///```
+/// Implemented this feature via a func returning the View, instead making the View itself public, only because
+/// doing so, drags a bunch of other stuff public along with it.
 public func SingleWindowMenuList()-> some View {
   return SingleWindowListView()
 }
 
- struct SingleWindowListView : View {
+ public struct SingleWindowListView : View {
     @State var windowList = SingleWindowList.shared
 
 
