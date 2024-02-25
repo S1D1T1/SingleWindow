@@ -133,9 +133,8 @@ public func SingleWindowMenuList()-> some View {
   return SingleWindowListView()
 }
 
- public struct SingleWindowListView : View {
+struct SingleWindowListView : View {
     @State var windowList = SingleWindowList.shared
-
 
    var body: some View {
         ForEach(windowList.all, id: \.self) { aWin in
