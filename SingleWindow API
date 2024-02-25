@@ -1,0 +1,22 @@
+SingleWindow API
+
+makeSingleWindow (title: String,
+                external:Bool = false,
+                shortcutString:String? = nil,
+                rect:NSRect = defaultRect,
+                content: @escaping () -> V))
+
+
+class SingleWindow
+
+.isOpen - I use this for conditionally disabling things
+.setWindowTitle()
+
+
+
+SingleWindowMenuList()
+
+
+        CommandGroup(before: .singleWindowList){
+            SingleWindowMenuList()
+        }
