@@ -1,7 +1,6 @@
 //  SingleWindow.swift
-//  GTimer
 //
-//  Created by Avi Fagan on 2/7/24.
+//  2/7/24.
 //
 
 #if os(macOS)
@@ -9,18 +8,8 @@ import Foundation
 import AppKit
 import SwiftUI
 
-public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
-
-// possibly useful options:
-
-//            styleMask: [.titled, .closable, .resizable],
-//            backing: .buffered,
-//            defer: false
-//        )
-//        window.center()
-//        self.init(window: window)
-
-
+/// makeSingleWindow
+///
 public func makeSingleWindow<V:View>(title: String,
                               external:Bool = false,
                               shortcutString:String? = nil,
@@ -30,6 +19,9 @@ public func makeSingleWindow<V:View>(title: String,
     window.myWin.contentView = NSHostingView(rootView: content())
     return window
 }
+
+public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
+
 
 @Observable
 public class SingleWindow : NSObject, NSWindowDelegate {
@@ -42,8 +34,8 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 
     init(title: String, external:Bool = false, shortcutString:String? = nil, rect:NSRect = defaultRect) {
         self.title = title
-        self.showString = "Show \(title)"
-        self.hideString = "Hide \(title)"
+        self.showString = "Show \(title)" //  this actually prevents memory leaks, compared to generating dynamically
+        self.hideString = "Hide \(title)" //
         self.myWin = makeWindow(with: title, external:external, rect: rect)
         self.isOpen = true
         if let firstchar = shortcutString?.first {
@@ -56,7 +48,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
         SingleWindowList.shared.all.append(self)
     }
 
-    /// intercept a system close action to just hide
+    /// intercept a system close action . hide instead
     public func windowWillClose(_ notification: Notification) {
         close()
     }
@@ -72,8 +64,12 @@ public class SingleWindow : NSObject, NSWindowDelegate {
         myWin.title = title
     }
 
-    // this presumes its in sync with menu title
-    func handleMenuCommand() {
+    /// this presumes its in sync with menu title
+  /// One subtle behavior , of debatable value:
+  ///     if window is visible, but not in front, then bring it front. ie, not strictly a visibility toggle
+  ///     but this feels like it matches the user's intent
+  ///
+    func showHideMenuCommand() {
         let isKeyWindow = NSApp.keyWindow === myWin
 
         if myWin.isVisible && isKeyWindow {
@@ -101,6 +97,12 @@ class iPadWindowRep {
     var all:[SingleWindow] = []
 }
 
+///  Create a Hide <Window Name> / Show <Window Name> Menu item for toggling window viz
+///   To put in the Mac "Window" menu, do like this :
+///
+///           CommandGroup(before: .singleWindowList){
+///             SingleWindowMenuList()
+///             }
 
 public func SingleWindowMenuList()-> some View {
   return SingleWindowListView()
@@ -114,13 +116,13 @@ public func SingleWindowMenuList()-> some View {
         ForEach(windowList.all, id: \.self) { aWin in
             if let short = aWin.shortcut {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
-                    aWin.handleMenuCommand()
+                    aWin.showHideMenuCommand()
                 }
                 .keyboardShortcut(short)
             }
             else {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
-                    aWin.handleMenuCommand()
+                    aWin.showHideMenuCommand()
                 }
             }
         }
@@ -157,7 +159,7 @@ func makeWindow(with title: String, external:Bool = false, rect:NSRect = default
     window.standardWindowButton(.closeButton)?.isHidden = false
     window.orderFront(nil)
     if NSScreen.screens.count > 1 && external {
-        window.toggleFullScreen(nil)
+        window.toggleFullScreen(nil)  //  † this shouldn't be default behavior
     }
     return window
 }

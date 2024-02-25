@@ -1,0 +1,97 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2759
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Oblique;\f2\fswiss\fcharset0 Helvetica-Bold;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww19160\viewh19680\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 SingleWindow for MacOS SwiftUI\
+\
+SingleWindow creates a window you can use in SwiftUI which is persistent - when closed by the user, it only hides, and retains its state. you can programmatically - \
+ - well, are you sitting down? you can\
+ OPEN\
+ and\
+ CLOSE\
+ \
+this window.\
+ give yourself a moment .. take that in. I'm here if you need to talk.\
+\
+The window's visible/ hidden state can be toggled with a menu command. The user can also close the window the usual ways - close button, or Cmd-W. they can zoom it pressing the green zoom button. unlike swiftui windows. Some swiftui windows don't fully zoom. some do. but that's fine.\
+\
+I needed it to show a dashboard for my mac App.\
+\
+Understandable that SwiftUI's doc / scene model can't natively support this behavior, It's a dumb alien thing on MacOS to have a window that's not a document, but some global state. I mean, the Cmd-0 for iTunes window was so long ago, maybe they forgot how. That code's long lost, like Saturn V plans. Calendar App doesn't have a central window you'd want to close, then recall. nor Photos. So there's no need to support this weird behavior in the 
+\f1\i framework which is the future of macos
+\f0\i0  development. \
+\
+to make your Window, pass a SwiftUI View to makeSingleWindow() . \
+\
+
+\f2\b \ul The SingleWindow API:
+\f0\b0 \ulnone \
+\
+makeSingleWindow (title: String,\
+                external:Bool = false,\
+                shortcutString:String? = nil,\
+                rect:NSRect = defaultRect,\
+                content: @escaping () -> V))\
+\
+\
+did you know what \'93 content: @escaping () -> V\'94  meant, when you first looked at Swift? Did you know what the V stood for?\
+Apple\'92s Docs team were born knowing it, They didn\'92t need to clutter the Jonny-Ive-sparse docs with real examples, like this:\
+\
+// make a window to host my groovy clock. Toggle it with Command-1\
+mySingleWindow = makeSingleWindow (title: \'93Groovy Clock\'94, shortcutString:\'941\'94) \{\
+				GroovyClockView()\
+				\}\
+\
+// Here\'92s the groovy clock on the external monitor, if available\
+\
+mySingleWindow = makeSingleWindow (title: \'93Groovy Clock, Stage Left\'94,  external:true, shortcutString:\'941\'94) \{\
+				GroovyClockView()\
+				\}\
+\
+Being outside the swiftui lifecycle, its state is not auto-restored.\
+\
+\'86 check on this: That variable, mySingleWindow needs to stick around. If it's local, the window will be disposed when the variable goes out of scope. I think.\
+\
+some SingleWindow class features:\
+\
+.isOpen - Boolean property. use it for conditionally disabling things\
+.setWindowTitle() - what it says. \
+	its'a window. it has a title bar. I want to SET the WINDOW's TITLE.\
+	\
+	wtaf is a navigationTitle()"? why not call it window Title? 
+\f1\i Why
+\f0\i0 , SwiftUI?\
+	answer: Enswiftification. (deference to Mr. Doctorow)\
+\
+\
+When your app starts, use the separate "maker" function to create the SingleWindow object. \
+Do you find that ugly? I do.\
+\
+I'm not a good enough programmer to consolidate it with the SingleWindow init. given swift's woowoo typing, and the fact that you pass a View. um, you pass *some view*. \
+pass any view?\
+or AnyView()?\
+\
+ maybe you can get a consolidated version compiling. You\'92re smarter than me. Most people are. But if you do, don't send a pull request. don't tell me about it. That'll just start the night terrors again.\
+\
+call SingleWindowMenuList() to install your window\'92s name in the mac menus. SingleWindowMenuList() adds menu items for each of your app\'92s SingleWindow objects.\
+Put those menu items where you want, presumably the "Window" menu. like this:\
+\
+        CommandGroup(before: .singleWindowList)\{\
+            SingleWindowMenuList()\
+        \}\
+\
+menu items are appear as "Show/ Hide <your Window>" depending on its state. Like this:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 {{\NeXTGraphic Screenshot 2024-02-24 at 7.46.03â€¯PM.png \width7700 \height5440 \appleattachmentpadding0 \appleembedtype0 \appleaqc
+}¬}\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs28 \cf0 \
+\
+You can attach a command key to the menu item, like Command-0 in Messages or Calendar. But Apple knows we don't need that feature in their flagship framework. and you definitely can't recall the Calendar or Messages window after closing it. But SwiftUI is still new, give it time. Well it was new 5 years ago. SwiftUI is as new as an obsolete iPhone.\
+}

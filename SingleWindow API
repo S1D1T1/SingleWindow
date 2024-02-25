@@ -1,22 +1,11 @@
 SingleWindow API
 
-makeSingleWindow (title: String,
-                external:Bool = false,
-                shortcutString:String? = nil,
-                rect:NSRect = defaultRect,
-                content: @escaping () -> V))
+// possibly useful options:
 
+//            styleMask: [.titled, .closable, .resizable],
+//            backing: .buffered,
+//            defer: false
+//        )
+//        window.center()
+//        self.init(window: window)
 
-class SingleWindow
-
-.isOpen - I use this for conditionally disabling things
-.setWindowTitle()
-
-
-
-SingleWindowMenuList()
-
-
-        CommandGroup(before: .singleWindowList){
-            SingleWindowMenuList()
-        }
