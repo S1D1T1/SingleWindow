@@ -2,6 +2,10 @@
 //
 //  2/7/24.
 //
+// part of what may become a general utility library for swiftui, focused on
+// clean simple API which address common usage
+//
+
 
 #if os(macOS)
 import Foundation
@@ -25,61 +29,73 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
 @Observable
 public class SingleWindow : NSObject, NSWindowDelegate {
-    var title:String
-    var myWin:NSWindow
-    var showString:String
-    var hideString:String
-    public var isOpen = false
-    var shortcut:KeyEquivalent?
+  var title:String
+  var myWin:NSWindow
+  var showString:String
+  var hideString:String
+  public var isOpen = false
+  var shortcut:KeyEquivalent?
 
-    init(title: String, external:Bool = false, shortcutString:String? = nil, rect:NSRect = defaultRect) {
-        self.title = title
-        self.showString = "Show \(title)" //  this actually prevents memory leaks, compared to generating dynamically
-        self.hideString = "Hide \(title)" //
-        self.myWin = makeWindow(with: title, external:external, rect: rect)
-        self.isOpen = true
-        if let firstchar = shortcutString?.first {
-            self.shortcut = KeyEquivalent(firstchar)
-        }
-
-        super.init()
-        self.myWin.delegate = self
-
-        SingleWindowList.shared.all.append(self)
+  init(title: String, external:Bool = false, shortcutString:String? = nil, rect:NSRect = defaultRect) {
+    self.title = title
+    self.showString = "Show \(title)" //  this actually prevents memory leaks, compared to generating dynamically
+    self.hideString = "Hide \(title)" //
+    self.myWin = makeWindow(with: title, external:external, rect: rect)
+    self.isOpen = true
+    if let firstchar = shortcutString?.first {
+      self.shortcut = KeyEquivalent(firstchar)
     }
 
-    /// intercept a system close action . hide instead
-    public func windowWillClose(_ notification: Notification) {
-        close()
-    }
+    super.init()
+    self.myWin.delegate = self
 
-    func close(){
-        myWin.orderOut(nil)
-        self.isOpen = false
-    }
+    SingleWindowList.shared.all.append(self)
+  }
 
-    /// this is distinct from the title  used in the Show/ Hide Menu
-    public func setWindowTitle(_ title:String){
 
-        myWin.title = title
-    }
+  /// intercept a system close action . hide instead
+  public func windowWillClose(_ notification: Notification) {
+    close()
+  }
 
-    /// this presumes its in sync with menu title
+
+  // MARK: Public API
+
+
+  public func close(){
+    myWin.orderOut(nil)
+    self.isOpen = false
+  }
+
+  /// this is distinct from the title  used in the Show/ Hide Menu
+  public func setWindowTitle(_ title:String){
+
+    myWin.title = title
+  }
+
+
+  public func open(){
+    self.isOpen = true
+    myWin.makeKeyAndOrderFront(nil)
+  }
+
+  // MARK: Internal
+
+  /// this presumes its in sync with menu title
   /// One subtle behavior , of debatable value:
   ///     if window is visible, but not in front, then bring it front. ie, not strictly a visibility toggle
   ///     but this feels like it matches the user's intent
   ///
-    func showHideMenuCommand() {
-        let isKeyWindow = NSApp.keyWindow === myWin
+  func showHideMenuCommand() {
+    let isKeyWindow = NSApp.keyWindow === myWin
 
-        if myWin.isVisible && isKeyWindow {
-            close()
-        }
-        else {
-            self.isOpen = true
-            myWin.makeKeyAndOrderFront(nil)
-        }
+    if myWin.isVisible && isKeyWindow {
+      close()
     }
+    else {
+      open()
+    }
+  }
 }
 #elseif os(iOS)
 class iPadWindowRep {
@@ -104,6 +120,9 @@ class iPadWindowRep {
 ///             SingleWindowMenuList()
 ///             }
 
+
+// This is a func returning the View, instead of the View itself, only because of public/ private stuff.
+// making the view public drags a bunch of other stuff along with it.
 public func SingleWindowMenuList()-> some View {
   return SingleWindowListView()
 }
@@ -130,6 +149,7 @@ public func SingleWindowMenuList()-> some View {
 }
 
 
+/// When you wanna get sh*t  done, AppKit
 func makeWindow(with title: String, external:Bool = false, rect:NSRect = defaultRect) -> NSWindow {
     var destScreen:NSScreen
 
