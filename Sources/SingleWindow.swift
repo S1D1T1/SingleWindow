@@ -115,11 +115,6 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 }
 
 
-
-public func SingleWindowCommandGroup() -> SingleWindowCommandGroupStruct {
-  return SingleWindowCommandGroupStruct()
-}
-
 //struct SingleWindowCommandGroup: Commands {
 //    var body: some Commands {
 //        CommandGroup(before: .windowList) {
@@ -140,7 +135,7 @@ public func SingleWindowCommandGroup() -> SingleWindowCommandGroupStruct {
 //}
 //
 
-public struct SingleWindowCommandGroupStruct: Commands {
+public struct SingleWindowCommandGroup: Commands {
   public init(){}
     public var body: some Commands {
         CommandGroup(before: .windowList) {
