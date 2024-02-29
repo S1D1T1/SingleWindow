@@ -115,11 +115,55 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 }
 
 
-public func SingleWindowCommandGroup() -> any Commands {
-  return            CommandGroup(before: .singleWindowList){
-    SingleWindowListView()
-  }
+
+public func SingleWindowCommandGroup() -> SingleWindowCommandGroupStruct {
+  return SingleWindowCommandGroupStruct()
 }
+
+//struct SingleWindowCommandGroup: Commands {
+//    var body: some Commands {
+//        CommandGroup(before: .windowList) {
+//            // Assuming `allWindows` is an array of window-related data you've prepared
+//            let commands = allWindows.map { window -> Button<Text> in
+//                Button(window.isOpen ? window.hideString : window.showString) {
+//                    window.toggleVisibility()
+//                }
+//            }
+//
+//            Group {
+//                ForEach(commands.indices, id: \.self) { index in
+//                    commands[index]
+//                }
+//            }
+//        }
+//    }
+//}
+//
+
+public struct SingleWindowCommandGroupStruct: Commands {
+    public var body: some Commands {
+        CommandGroup(before: .windowList) {
+          let commands = SingleWindowList.shared.all.map { window -> Button<Text> in
+              Button(window.isOpen ? window.hideString : window.showString) {
+                  window.toggleVisibility()
+              }
+          }
+
+          Group {
+              ForEach(commands.indices, id: \.self) { index in
+                  commands[index]
+              }
+          }
+      }
+    }
+}
+
+
+//public struct SingleWindowCommandGroup() -> any Commands {
+//  return            CommandGroup(before: .singleWindowList){
+//    SingleWindowListView()
+//  }
+//}
 
 @Observable
  class SingleWindowList {
