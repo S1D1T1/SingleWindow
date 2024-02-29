@@ -14,7 +14,7 @@ import SwiftUI
 
 /// makeSingleWindow
 ///
-/// Create a MacOS window containing a SwiftUI view
+/// Create a MacOS window hosting a SwiftUI view, which is supplied by the client code
 ///
 /// - Parameters:
 ///   - title: The title which appears in the Title bar, and the "Window" menu.
@@ -25,6 +25,9 @@ import SwiftUI
 ///
 /// - Returns: a SingleWindow object
 ///
+///  ## Why a helper function:
+///  It works perfectly.  A helper function isolates the class from being Generic typed, which propagates into a whole lot of work
+///  just to mollify the compiler, with no benefit to the user
 
 public func makeSingleWindow<V:View>(title: String,
                               external:Bool = false,
@@ -39,9 +42,8 @@ public func makeSingleWindow<V:View>(title: String,
 public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
 
-/// SingleWindow Class
+/// Implement an AppKit window for use in SwiftUI Projects
 ///
-///   ### heading
 ///
 
 @Observable
@@ -69,24 +71,26 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     SingleWindowList.shared.all.append(self)
   }
 
-  /// intercept a system close action . hide instead
+  /// Internal function that intercepts a system close action, to hide instead. 
   public func windowWillClose(_ notification: Notification) {
     close()
   }
 
   // MARK: Public API
 
+  /// open the window if it was closed
   public func open(){
     self.isOpen = true
     myWin.makeKeyAndOrderFront(nil)
   }
 
+  /// close the window -  really just hide it
   public func close(){
     myWin.orderOut(nil)
     self.isOpen = false
   }
 
-  /// this is distinct from the title  used in the Show/ Hide Menu
+  /// this title is only used in the Window's title bar. It's distinct from the title used in the Window Menu
   public func setWindowTitle(_ title:String){
     myWin.title = title
   }
@@ -117,16 +121,17 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     var all:[SingleWindow] = []
 }
 
-///  Create a Hide <Window Name> / Show <Window Name> Menu item for toggling window visibility
+///  Create  Hide <Window Name> / Show <Window Name> Menu items for toggling window visibility
 ///
-///   To put in the Mac "Window" menu, do like this :
-/// ```
+///   To put in the Mac "Window" menu :
+///```
 ///           CommandGroup(before: .singleWindowList){
 ///             SingleWindowMenuList()
 ///             }
 ///```
-/// Implemented this feature via a func returning the View, instead making the View itself public, only because
-/// doing so, drags a bunch of other stuff public along with it.
+/// Implemented this feature via a func returning the View, instead making the View itself public.
+/// a public View struct drags unneeded other stuff public along with it.
+///
 public func SingleWindowMenuList()-> some View {
   return SingleWindowListView()
 }

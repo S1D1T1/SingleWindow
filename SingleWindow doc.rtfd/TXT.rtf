@@ -54,8 +54,6 @@ mySingleWindow = makeSingleWindow (title: \'93Groovy Clock, Stage Left\'94,  ext
 \
 Being outside the swiftui lifecycle, its state is not auto-restored.\
 \
-\'86 check on this: That variable, mySingleWindow needs to stick around. If it's local, the window will be disposed when the variable goes out of scope. I think.\
-\
 some SingleWindow class features:\
 \
 .isOpen - Boolean property. use it for conditionally disabling things\
@@ -77,14 +75,14 @@ or AnyView()\
 \
  maybe you can get a consolidated version compiling. You\'92re smarter than me. Most people are. But if you do, don't send a pull request. don't tell me about it. That'll just start the night terrors again.\
 \
-call SingleWindowMenuList() to install your window\'92s name in the mac menus. SingleWindowMenuList() adds menu items for each of your app\'92s SingleWindow objects.\
+call SingleWindowMenuList() to install your window\'92s name in the mac menus. The menu command to toggle your window is not added automatically. Calling SingleWindowMenuList() adds menu items for each of your app\'92s SingleWindow objects.\
 Put those menu items where you want, presumably the "Window" menu. like this:\
 \
         CommandGroup(before: .singleWindowList)\{\
             SingleWindowMenuList()\
         \}\
 \
-menu items are appear as "Show/ Hide <your Window>" depending on its state. Like this:\
+menu items appear as "Show/ Hide <your Window>" depending on its state. Like this:\
 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
@@ -97,8 +95,9 @@ You can attach a command key to the menu item, like Command-0 in Messages or Cal
 \
 \
 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f2\b Internal / Implementation.
+\f2\b \cf0 Internal / Implementation.
 \f0\b0 \
 \
 AppKit windows. WindowDelegate.\
