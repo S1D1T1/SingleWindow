@@ -115,7 +115,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 }
 
 
-func SingleWindowCommandGroup() -> any Commands {
+public func SingleWindowCommandGroup() -> any Commands {
   return            CommandGroup(before: .singleWindowList){
     SingleWindowListView()
   }
