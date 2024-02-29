@@ -141,6 +141,7 @@ public func SingleWindowCommandGroup() -> SingleWindowCommandGroupStruct {
 //
 
 public struct SingleWindowCommandGroupStruct: Commands {
+  public init(){}
     public var body: some Commands {
         CommandGroup(before: .windowList) {
           let commands = SingleWindowList.shared.all.map { window -> Button<Text> in
