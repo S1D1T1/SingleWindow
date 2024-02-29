@@ -139,20 +139,10 @@ public struct SingleWindowCommandGroup: Commands {
   public init(){}
     public var body: some Commands {
         CommandGroup(before: .windowList) {
-          let commands = SingleWindowList.shared.all.map { window -> Button<Text> in
-              Button(window.isOpen ? window.hideString : window.showString) {
-                  window.toggleVisibility()
-              }
-          }
-
-          Group {
-              ForEach(commands.indices, id: \.self) { index in
-                  commands[index]
+          SingleWindowListView()
               }
           }
       }
-    }
-}
 
 
 //public struct SingleWindowCommandGroup() -> any Commands {
