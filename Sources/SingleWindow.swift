@@ -115,13 +115,19 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 }
 
 
+func SingleWindowCommandGroup() -> any Commands {
+  return            CommandGroup(before: .singleWindowList){
+    SingleWindowListView()
+  }
+}
+
 @Observable
  class SingleWindowList {
     static var shared = SingleWindowList()
     var all:[SingleWindow] = []
 }
 
-///  Create  Hide <Window Name> / Show <Window Name> Menu items for toggling window visibility
+///  Create  "Hide <Window Name> / Show <Window Name>" Menu items for toggling window visibility
 ///
 ///   To put in the Mac "Window" menu :
 ///```
@@ -132,7 +138,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
 /// Implemented this feature via a func returning the View, instead making the View itself public.
 /// a public View struct drags unneeded other stuff public along with it.
 ///
-public func SingleWindowMenuList()-> some View {
+func SingleWindowMenuList()-> some View {
   return SingleWindowListView()
 }
 
