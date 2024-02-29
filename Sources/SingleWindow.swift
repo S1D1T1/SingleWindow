@@ -114,26 +114,13 @@ public class SingleWindow : NSObject, NSWindowDelegate {
   }
 }
 
+///  Create  "Hide <Window Name> / Show <Window Name>" Menu items for toggling window visibility
+///
+///   To put these in the Mac "Window" menu, add this to your command block :
+///```
+///           SingleWindowCommandGroup()
+///```
 
-//struct SingleWindowCommandGroup: Commands {
-//    var body: some Commands {
-//        CommandGroup(before: .windowList) {
-//            // Assuming `allWindows` is an array of window-related data you've prepared
-//            let commands = allWindows.map { window -> Button<Text> in
-//                Button(window.isOpen ? window.hideString : window.showString) {
-//                    window.toggleVisibility()
-//                }
-//            }
-//
-//            Group {
-//                ForEach(commands.indices, id: \.self) { index in
-//                    commands[index]
-//                }
-//            }
-//        }
-//    }
-//}
-//
 
 public struct SingleWindowCommandGroup: Commands {
   public init(){}
@@ -144,32 +131,10 @@ public struct SingleWindowCommandGroup: Commands {
           }
       }
 
-
-//public struct SingleWindowCommandGroup() -> any Commands {
-//  return            CommandGroup(before: .singleWindowList){
-//    SingleWindowListView()
-//  }
-//}
-
 @Observable
  class SingleWindowList {
     static var shared = SingleWindowList()
     var all:[SingleWindow] = []
-}
-
-///  Create  "Hide <Window Name> / Show <Window Name>" Menu items for toggling window visibility
-///
-///   To put in the Mac "Window" menu :
-///```
-///           CommandGroup(before: .singleWindowList){
-///             SingleWindowMenuList()
-///             }
-///```
-/// Implemented this feature via a func returning the View, instead making the View itself public.
-/// a public View struct drags unneeded other stuff public along with it.
-///
-func SingleWindowMenuList()-> some View {
-  return SingleWindowListView()
 }
 
 struct SingleWindowListView : View {
