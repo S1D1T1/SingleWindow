@@ -1,6 +1,6 @@
 # Differences from SwiftUI Window() or WindowGroup() Scene
 
-You don't need to read this discussion in order to use SingleWindow. There's no further instructions, but it can help to address what brought you here. In short:  
+You don't need to read this document to use SingleWindow. There's no further instructions, but it can help to address what brought you here. In short:  
 SwiftUI/ MacOS doesn’t easily enable the window behavior of common mac apps like iTunes or Calendar, where you could close the window and retrieve it with Cmd-0. 
 
 
