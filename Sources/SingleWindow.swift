@@ -13,7 +13,7 @@ import SwiftUI
 
 /// makeSingleWindow
 ///
-/// Create a MacOS window hosting a SwiftUI view, which is supplied by the client code
+/// Create a MacOS window hosting a SwiftUI view, which you supply
 ///
 /// - Parameters:
 ///   - title: The title which appears in the Title bar, and the "Window" menu.
@@ -187,8 +187,5 @@ func makeWindow(with title: String, external:Bool = false, rect:NSRect = default
     window.title = title
     window.standardWindowButton(.closeButton)?.isHidden = false
     window.orderFront(nil)
-//    if NSScreen.screens.count > 1 && external {
-//        window.toggleFullScreen(nil)  //  † this shouldn't be default behavior
-//    }
     return window
 }
