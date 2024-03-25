@@ -10,7 +10,7 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 
 - Create persistent windows for SwiftUI views
 - Programmatically open or close windows
-- Support for multiple SingleWindow instances
+- Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
 - Menu command for toggling window visibility
 - Option to open windows on external displays
 - Access to the underlying AppKit `NSWindow` object
