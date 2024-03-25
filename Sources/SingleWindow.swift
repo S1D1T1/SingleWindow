@@ -3,7 +3,6 @@
 //
 //  2/7/24.
 //
-// part of what may become a general utility library for swiftui, focused on
 // clean simple API, for normies
 //
 
@@ -26,8 +25,7 @@ import SwiftUI
 /// - Returns: a SingleWindow object
 ///
 ///  ## Why a helper function:
-///  It works perfectly.  A helper function isolates the class from being Generic typed, which propagates into a whole lot of work
-///  just to mollify the compiler, with no benefit to the user
+///  It works perfectly.  A helper function isolates the class from being Generic typed, which generates complexity
 
 public func makeSingleWindow<V:View>(title: String,
                               external:Bool = false,
@@ -49,7 +47,7 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 @Observable
 public class SingleWindow : NSObject, NSWindowDelegate {
   var title:String
-  var myWin:NSWindow
+ public var myWin:NSWindow
   var showString:String
   var hideString:String
   public var isOpen = false
@@ -142,12 +140,14 @@ struct SingleWindowListView : View {
 
    var body: some View {
         ForEach(windowList.all, id: \.self) { aWin in
+          // Menu command with shortcut
             if let short = aWin.shortcut {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
                     aWin.toggleVisibility()
                 }
                 .keyboardShortcut(short)
             }
+            // menu command without shortcut
             else {
                 Button(aWin.isOpen ? aWin.hideString : aWin.showString){
                     aWin.toggleVisibility()
@@ -187,8 +187,8 @@ func makeWindow(with title: String, external:Bool = false, rect:NSRect = default
     window.title = title
     window.standardWindowButton(.closeButton)?.isHidden = false
     window.orderFront(nil)
-    if NSScreen.screens.count > 1 && external {
-        window.toggleFullScreen(nil)  //  † this shouldn't be default behavior
-    }
+//    if NSScreen.screens.count > 1 && external {
+//        window.toggleFullScreen(nil)  //  † this shouldn't be default behavior
+//    }
     return window
 }
