@@ -72,6 +72,9 @@ To add a menu item in the "Window" menu for toggling the visibility of your Sing
 
 The menu item will be created with the format "Show/Hide `<Your Window Title>`". If a `shortcutString` was provided when creating the SingleWindow, the menu item will also have the corresponding keyboard shortcut.
 
+<img width="385" alt="Unknown" src="https://github.com/S1D1T1/SingleWindow/assets/156350598/645fee01-17dc-45e4-981a-0bd67dcd60bd">
+
+
 ## Example
 
 You can also create a SingleWindow on an external display, if available:
