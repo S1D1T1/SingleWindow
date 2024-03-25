@@ -11,10 +11,9 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 - Create persistent windows for SwiftUI views
 - Programmatically open or close windows
 - Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
-- Menu command for toggling window visibility
-- Option to open windows on external displays
+- Menu command for toggling window visibility, with optional keyboard shortcuts
+- Option to create windows on external displays
 - Access to the underlying AppKit `NSWindow` object
-- Keyboard shortcuts for toggling window visibility
 
 ## Installation
 
@@ -34,7 +33,7 @@ Create a SingleWindow that hosts your SwiftUI view, by calling `makeSingleWindow
 import SingleWindow
 
 // My app needs a groovy clock window
-let mySingleWindow = makeSingleWindow(
+let groovyClockWindow = makeSingleWindow(
     title: "Groovy Clock",
     shortcutString: "1"
 ) {
@@ -63,7 +62,7 @@ let mySingleWindow = makeSingleWindow(
 
 ### Install Menu Command
 
-To add a menu item in the "Window" menu for toggling the SingleWindow visibility, call `SingleWindowCommandGroup()` within your `.commands` block:
+To add a menu item in the "Window" menu for toggling the visibility of your SingleWindow, call `SingleWindowCommandGroup()` within your `.commands` block:
 
 ```swift
 .commands {
