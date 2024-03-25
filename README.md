@@ -10,16 +10,16 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 
 - Create persistent windows for SwiftUI views
 - Programmatically open or close windows
+- Access to the underlying AppKit `NSWindow` object
 - Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
 - Menu command for toggling window visibility, with optional keyboard shortcuts
 - Option to create windows on external displays
-- Access to the underlying AppKit `NSWindow` object
 
 ## Installation
 
 ### Swift Package Manager
 
-SingleWindow can be installed using the Swift Package Manager. Add the package to your Xcode project by selecting `File` > `Add Packages` and entering the repository URL:
+SingleWindow can be installed using the Swift Package Manager. Add the package to your Xcode project by selecting `File` > `Add Package Dependencies...` and entering the repository URL:
 
 ```
 https://github.com/S1D1T1/SingleWindow.git
@@ -27,7 +27,7 @@ https://github.com/S1D1T1/SingleWindow.git
 
 ## Usage
 
-Create a SingleWindow that hosts your SwiftUI view, by calling `makeSingleWindow` 
+Create a SingleWindow to host your SwiftUI view, by calling `makeSingleWindow`, passing your View in a closure: 
 
 ```swift
 import SingleWindow
@@ -69,6 +69,8 @@ To add a menu item in the "Window" menu for toggling the visibility of your Sing
     SingleWindowCommandGroup()
 }
 ```
+
+<p style="margin-left: 50px; margin-right: 50px;">(an aside: "*Which* .commands block", you might ask. Command blocks modify Scenes, and SingleWindow replaces some Scenes. Luckily, commands can apparently be attached to any Scene, to appear in the menu bar. My app hangs its .commands() block off of the "Settings" scene. And what if your app ONLY wants SingleWindows, and has no Scene to hang menu commands from? Good Question. I don't have a general answer)
 
 The menu item will be created with the format "Show/Hide `<Your Window Title>`". If a `shortcutString` was provided when creating the SingleWindow, the menu item will also have the corresponding keyboard shortcut.
 
