@@ -17,6 +17,7 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 - Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
 - Menu command for toggling window visibility, with optional keyboard shortcuts
 - Option to create windows on external displays
+- Ability to identify the front window
 
 ## Installation
 
