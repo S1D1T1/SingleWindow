@@ -1,4 +1,7 @@
 # SingleWindow
+<img src="https://img.shields.io/badge/Platforms-macOS-blue">
+
+
 
 SingleWindow is a SwiftUI library for macOS that provides a state-preserving window for your SwiftUI views. SingleWindow is explicitly tasked with enabling traditional AppKit window functionality in a SwiftUI MacOS app. It gives you app control over opening, closing, or naming your window. Additionally the user has all the control they'd normally have to open and close the window via the window controls and menu items.
 
