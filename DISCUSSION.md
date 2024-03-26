@@ -9,6 +9,7 @@ SwiftUI/ MacOS doesn’t easily enable the window behavior of common mac apps li
 - access to NSWindow
 - program control to open a window without needing the swiftui environment variable openWindow, which requires an already existing View
 - full screen zoom, not enabled with Window() Scene.
+- access to the Windows stylemask - to enable/disable zoom, .closable, .miniaturizable, etc
 - .isOpen - Easy *factual* app knowledge of whether the window is actually open. Many (unreliable) housekeeping functions tied to .onAppear() can be replaced.
 - External monitor support
 - Ability to identify the front window, needed for handling menu commands.
