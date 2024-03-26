@@ -27,7 +27,7 @@ https://github.com/S1D1T1/SingleWindow.git
 
 ## Basic Usage
 
-Create a SingleWindow to host your SwiftUI view, by calling `makeSingleWindow`, passing your View in a closure: 
+Create a SingleWindow object to host your SwiftUI view, by calling `makeSingleWindow`, passing your View in a closure: 
 
 ```swift
 import SingleWindow
