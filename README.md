@@ -3,7 +3,7 @@
 
 
 
-SingleWindow is a SwiftUI library for macOS which simplifies basic window operations which may be obscured with SwiftUI. These operations - open, close, hide, bring front, set title, etc. were more direct under AppKit, hence this library implements them with AppKit calls. SingleWindow is specifically meant to implement a "dashboard" type display of which your app needs exactly 1 copy, and its contents are preserved when it is closed.
+SingleWindow is a SwiftUI library for macOS which simplifies basic window operations which may be obscured with SwiftUI. These operations - open, close, hide, bring front, set title, etc. were more direct under AppKit, hence this library implements them with AppKit calls. Explicitly, this does not rest on the `Scene` framework. SingleWindow is specifically meant to implement a "dashboard" type display of which your app needs exactly 1 (Single) copy, and its contents are preserved when it is closed.
 
 ## Uses
 
@@ -81,7 +81,7 @@ The menu item will be created with the format "Show/Hide `<Your Window Title>`".
 <img width="385" alt="Unknown" src="https://github.com/S1D1T1/SingleWindow/assets/156350598/645fee01-17dc-45e4-981a-0bd67dcd60bd">
 
 
-## Example
+## Examples
 
 You can also create a SingleWindow on an external display, if available:
 
@@ -93,6 +93,18 @@ let externalSingleWindow = makeSingleWindow(
 ) {
     GroovyClockView()
 }
+```
+Apply a menu command to the front window:
+```swift
+        // Command-Option-T toggles toolbar on the front window
+        Button("Toggle Toolbar"){
+          if appWindowStates.imageBrowserWindow.myWin.isKeyWindow {
+            ImageBrowserState.shared.showToolbar.toggle()
+          }
+          else if appWindowStates.galleryWindow.myWin.isKeyWindow {
+            GalleryWindowState.shared.showToolbar.toggle()
+          }
+        }.keyboardShortcut("t",modifiers: [.command,.option])
 ```
 
 ## License
