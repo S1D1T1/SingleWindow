@@ -95,7 +95,7 @@ let externalSingleWindow = makeSingleWindow(
     GroovyClockView()
 }
 ```
-Apply a menu command to the front window, by examining your SingleWindow objects, using AppKit features
+Apply a menu command to the front window, by examining your SingleWindow objects, using AppKit properties
 ```swift
         // Command-Option-T toggles toolbar on the front window
         Button("Toggle Toolbar"){
