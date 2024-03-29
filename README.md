@@ -3,7 +3,7 @@
 
 
 
-SingleWindow is a SwiftUI library for macOS which simplifies standard Mac window operations which may be obscured in pure SwiftUI. Your window hosts a SwiftUI View **and** has use of traditional operations such as open, close, hide, bring front, set title, etc. which were more direct under AppKit. Hence this library implements them with AppKit calls - explicitly, windows created via this library do not live in the `Scene` framework. SingleWindow is specifically meant to implement a "dashboard" type display of which your app needs exactly 1 (Single) copy, and its contents are preserved when it is closed.
+SingleWindow is a SwiftUI library for macOS which simplifies standard Mac window operations which may be obscured in pure SwiftUI. Your window hosts a SwiftUI View **and** has use of traditional operations such as open, close, hide, bring front, set title, etc. which were more direct under AppKit. Hence this library implements them with AppKit calls - explicitly, windows created via this library do not live in the `Scene` framework. SingleWindow makes it simple to create a "dashboard" type display of which your app needs exactly 1 (Single) copy, and its contents are preserved when it is closed.
 
 ## Uses
 
