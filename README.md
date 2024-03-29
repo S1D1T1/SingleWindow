@@ -40,7 +40,7 @@ import SingleWindow
 // My app needs a groovy clock window
 let groovyClockWindow = makeSingleWindow(
     title: "Groovy Clock",
-    shortcutString: "1"
+    shortcutString: "1"    // Command-1 toggles the Groovy Clock
 ) {
     GroovyClockView()
 }
