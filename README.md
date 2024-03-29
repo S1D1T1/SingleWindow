@@ -90,7 +90,7 @@ You can also create a SingleWindow on an external display, if available:
 let externalSingleWindow = makeSingleWindow(
     title: "Groovy Clock, Stage Left",
     external: true,
-    shortcutString: "1"
+    shortcutString: "1"  // Command-1 toggles the Groovy Clock
 ) {
     GroovyClockView()
 }
