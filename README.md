@@ -1,6 +1,9 @@
 # SingleWindow
+<img src="https://img.shields.io/badge/Platforms-macOS-blue">
 
-SingleWindow is a SwiftUI library for macOS that provides a state-preserving window for your SwiftUI views. SingleWindow is explicitly tasked with enabling traditional AppKit window functionality in a SwiftUI MacOS app. It gives you app control over opening, closing, or naming your window. Additionally the user has all the control they'd normally have to open and close the window via the window controls and menu items.
+
+
+SingleWindow is a SwiftUI library for macOS which simplifies standard Mac window operations which may be obscured in pure SwiftUI. Your window hosts a SwiftUI View **and** has use of traditional operations such as open, close, hide, bring front, set title, etc. which were more direct under AppKit. Hence this library implements them with AppKit calls - explicitly, windows created via this library do not live in the `Scene` framework. SingleWindow makes it simple to create a "dashboard" type display of which your app needs exactly 1 (Single) copy, and its contents are preserved when it is closed.
 
 ## Uses
 
@@ -10,10 +13,12 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 
 - Create persistent windows for SwiftUI views
 - Programmatically open or close windows
+- Programmatic control of window zooming
 - Access to the underlying AppKit `NSWindow` object
 - Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
 - Menu command for toggling window visibility, with optional keyboard shortcuts
 - Option to create windows on external displays
+- Ability to identify the front window - eg, for directing menu commands
 
 ## Installation
 
@@ -27,7 +32,7 @@ https://github.com/S1D1T1/SingleWindow.git
 
 ## Basic Usage
 
-Create a SingleWindow to host your SwiftUI view, by calling `makeSingleWindow`, passing your View in a closure: 
+Create a SingleWindow object to host your SwiftUI view, by calling `makeSingleWindow`, passing your View in a closure: 
 
 ```swift
 import SingleWindow
@@ -35,7 +40,7 @@ import SingleWindow
 // My app needs a groovy clock window
 let groovyClockWindow = makeSingleWindow(
     title: "Groovy Clock",
-    shortcutString: "1"
+    shortcutString: "1"    // Command-1 toggles the Groovy Clock
 ) {
     GroovyClockView()
 }
@@ -70,14 +75,14 @@ To add a menu item in the "Window" menu for toggling the visibility of your Sing
 }
 ```
 
-<p style="margin-left: 50px; margin-right: 50px;">(an aside: "*Which* .commands block", you might ask. Command blocks modify Scenes, and SingleWindow replaces some Scenes. Luckily, commands can apparently be attached to any Scene, to appear in the menu bar. My app hangs its .commands() block off of the "Settings" scene. And what if your app ONLY wants SingleWindows, and has no Scene to hang menu commands from? Good Question. I don't have a general answer)
+    (an aside: "*Which* .commands block", you might ask. Command blocks modify Scenes, and SingleWindow replaces some Scenes. Luckily, commands can apparently be attached to any Scene, to appear in the menu bar. My app hangs its .commands() block off of the "Settings" scene. And what if your app ONLY wants SingleWindows, and has no Scene to hang menu commands from? Good Question. I don't have a general answer)
 
 The menu item will be created with the format "Show/Hide `<Your Window Title>`". If a `shortcutString` was provided when creating the SingleWindow, the menu item will also have the corresponding keyboard shortcut.
 
 <img width="385" alt="Unknown" src="https://github.com/S1D1T1/SingleWindow/assets/156350598/645fee01-17dc-45e4-981a-0bd67dcd60bd">
 
 
-## Example
+## Examples
 
 You can also create a SingleWindow on an external display, if available:
 
@@ -85,10 +90,22 @@ You can also create a SingleWindow on an external display, if available:
 let externalSingleWindow = makeSingleWindow(
     title: "Groovy Clock, Stage Left",
     external: true,
-    shortcutString: "1"
+    shortcutString: "1"  // Command-1 toggles the Groovy Clock
 ) {
     GroovyClockView()
 }
+```
+Apply a menu command to the front window, by examining your SingleWindow objects, using AppKit properties
+```swift
+        // Command-Option-T toggles toolbar on the front window
+        Button("Toggle Toolbar"){
+          if appWindowStates.imageBrowserWindow.myWin.isKeyWindow {
+            ImageBrowserState.shared.showToolbar.toggle()
+          }
+          else if appWindowStates.galleryWindow.myWin.isKeyWindow {
+            GalleryWindowState.shared.showToolbar.toggle()
+          }
+        }.keyboardShortcut("t",modifiers: [.command,.option])
 ```
 
 ## License
