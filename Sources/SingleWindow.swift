@@ -1,32 +1,27 @@
-//
 // SingleWindow.swift
 //
 //  2/7/24.
 //
 // clean simple API, for normies
 //
-
+#if os(macOS)
 
 import Foundation
 import AppKit
 import SwiftUI
 
-/// makeSingleWindow
-///
-/// Create a MacOS window hosting a SwiftUI view, which you supply
+/// Creates a macOS window hosting a SwiftUI view.
 ///
 /// - Parameters:
-///   - title: The title which appears in the Title bar, and the "Window" menu.
-///   - external: If true, place on the external screen if it exists.
-///   - shortcutString: A one character string with the keyboard shortcut for its  menu item. Ie, "0" means Command-0 toggles the window
-///   - rect: window's bounding rectangle
-///   - content: the View hosted by the window
+///   - title: The title that appears in the title bar and the "Window" menu.
+///   - external: If `true`, the window is placed on the external screen if one exists. Default is `false`.
+///   - shortcutString: A one-character string representing the keyboard shortcut for toggling the window visibility via the menu item. For example, "0" means Command-0 toggles the window. Default is `nil`.
+///   - rect: The bounding rectangle for the window. Default is `defaultRect`.
+///   - content: A closure returning the SwiftUI view to be hosted by the window.
 ///
-/// - Returns: a SingleWindow object
-///
+/// - Returns: A `SingleWindow` object.
 ///  ## Why a helper function:
 ///  It works perfectly.  A helper function isolates the class from being Generic typed, which generates complexity
-
 public func makeSingleWindow<V:View>(title: String,
                               external:Bool = false,
                               shortcutString:String? = nil,
@@ -41,18 +36,23 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
 
 /// Implement an AppKit window for use in SwiftUI Projects
-///
-///
-
+/// This window hosts a SwiftUI View, but does *not* exist in the `Scene` Framework
 @Observable
 public class SingleWindow : NSObject, NSWindowDelegate {
   var title:String
- public var myWin:NSWindow
+  public var myWin:NSWindow
   var showString:String
   var hideString:String
   public var isOpen = false
   var shortcut:KeyEquivalent?
 
+  /// Initializes a new instance of the `SingleWindow` class.
+  ///
+  /// - Parameters:
+  ///   - title: The title of the window.
+  ///   - external: If `true`, the window is placed on the external screen if one exists. Default is `false`.
+  ///   - shortcutString: A one-character string representing the keyboard shortcut for toggling the window visibility via the menu item. Default is `nil`.
+  ///   - rect: The bounding rectangle for the window. Default is `defaultRect`.
   init(title: String, external:Bool = false, shortcutString:String? = nil, rect:NSRect = defaultRect) {
     self.title = title
     self.showString = "Show \(title)" //  this actually prevents memory leaks, compared to generating dynamically
@@ -69,7 +69,8 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     SingleWindowList.shared.all.append(self)
   }
 
-  /// Internal function that intercepts a system close action, to hide instead. 
+  /// Internal function that intercepts a system close action, to hide instead. Public only due to compiler requirement
+  /// - Parameter notification: The notification object containing information about the close action.
   public func windowWillClose(_ notification: Notification) {
     close()
   }
@@ -82,19 +83,23 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     myWin.makeKeyAndOrderFront(nil)
   }
 
-  /// close the window -  really just hide it
+  /// close (hide, actually) the window
   public func close(){
     myWin.orderOut(nil)
     self.isOpen = false
   }
 
-  /// this title is only used in the Window's title bar. It's distinct from the title used in the Window Menu
+  /// Sets the title of the window.
+  ///
+  /// - Parameter title: The new title for the window.
   public func setWindowTitle(_ title:String){
+    /// this title is only used in the Window's title bar. It's distinct from the title used in the Window Menu †
     myWin.title = title
   }
 
   // MARK: Internal
 
+  /// Toggles the visibility of the window.
   /// this presumes its in sync with menu title
   /// One subtle behavior , of debatable value:
   ///     if window is visible, but not in front, then bring it front. ie, not strictly a visibility toggle
@@ -112,14 +117,12 @@ public class SingleWindow : NSObject, NSWindowDelegate {
   }
 }
 
-///  Create  "Hide <Window Name> / Show <Window Name>" Menu items for toggling window visibility
+///  Creates  "Hide <Window Name> / Show <Window Name>" Menu items for toggling window visibility
 ///
-///   To put these in the Mac "Window" menu, add this to your command block :
+///   To put these in the Mac "Window" menu, add this to your `.commands` block :
 ///```
 ///           SingleWindowCommandGroup()
 ///```
-
-
 public struct SingleWindowCommandGroup: Commands {
   public init(){}
     public var body: some Commands {
@@ -129,12 +132,14 @@ public struct SingleWindowCommandGroup: Commands {
           }
       }
 
+/// A class that manages a shared list of `SingleWindow` instances.
 @Observable
  class SingleWindowList {
     static var shared = SingleWindowList()
     var all:[SingleWindow] = []
 }
 
+/// A SwiftUI view that displays menu items for toggling the visibility of `SingleWindow` instances.
 struct SingleWindowListView : View {
     @State var windowList = SingleWindowList.shared
 
@@ -157,7 +162,14 @@ struct SingleWindowListView : View {
     }
 }
 
-
+/// Creates an `NSWindow` instance with the specified parameters.
+///
+/// - Parameters:
+///   - title: The title of the window.
+///   - external: If `true`, the window is placed on the external screen if one exists. Default is `false`.
+///   - rect: The bounding rectangle for the window. Default is `defaultRect`.
+///
+/// - Returns: An `NSWindow` instance.
 /// When you wanna get sh*t  done, AppKit
 func makeWindow(with title: String, external:Bool = false, rect:NSRect = defaultRect) -> NSWindow {
     var destScreen:NSScreen
@@ -189,3 +201,4 @@ func makeWindow(with title: String, external:Bool = false, rect:NSRect = default
     window.orderFront(nil)
     return window
 }
+#endif  //  macos
