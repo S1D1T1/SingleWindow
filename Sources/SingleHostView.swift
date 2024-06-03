@@ -15,7 +15,12 @@ public final class SingleHostingView<Content: View>: NSHostingView<Content> {
     fatalError("init(coder:) has not been implemented")
   }
 
-  required init(rootView: Content) {
+  init(onKey:@escaping ((_ :NSEvent)->Void),rootView: Content) {
+    self.onKey = onKey
+    super.init(rootView: rootView)
+  }
+
+  required public init(rootView: Content) {
     super.init(rootView: rootView)
   }
 

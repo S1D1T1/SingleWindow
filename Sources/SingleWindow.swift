@@ -23,13 +23,20 @@ import SwiftUI
 ///  ## Why a helper function:
 ///  It works perfectly.  A helper function isolates the class from being Generic typed, which generates complexity
 public func makeSingleWindow<V:View>(title: String,
-                              external:Bool = false,
-                              shortcutString:String? = nil,
-                              rect:NSRect = defaultRect,
-                              content: @escaping () -> V) -> SingleWindow {
-    let window = SingleWindow(title: title, external:external, shortcutString:shortcutString, rect:rect)
-    window.myWin.contentView = SingleHostingView(rootView: content())
-    return window
+                                     external:Bool = false,
+                                     shortcutString:String? = nil,
+                                     rect:NSRect = defaultRect,
+                                     onKey:((_ :NSEvent)->Void)?,
+                                     content: @escaping () -> V) -> SingleWindow {
+  let window = SingleWindow(title: title, external:external, shortcutString:shortcutString, rect:rect)
+  if let onKey {
+    window.myWin.contentView = SingleHostingView(onKey:onKey, rootView: content())
+  }
+  else {
+    window.myWin.contentView = NSHostingView(rootView: content())
+
+  }
+  return window
 }
 
 public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
