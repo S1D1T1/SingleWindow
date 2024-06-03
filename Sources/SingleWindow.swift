@@ -116,7 +116,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     }
   }
 
-  func toggleFullScreen() {
+  public func toggleFullScreen() {
     myWin.toggleFullScreen(nil)
   }
 }
