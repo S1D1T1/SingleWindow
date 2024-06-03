@@ -1,0 +1,15 @@
+{
+  "originHash" : "7d57a6cbeb962196e0570af73ec550d3e8e2fb8673683327f087c75d3a544291",
+  "pins" : [
+    {
+      "identity" : "singlewindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/S1D1T1/SingleWindow.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "db3285b5cb84ef5c42dbed7ad75aa76bd27f5b4c"
+      }
+    }
+  ],
+  "version" : 3
+}

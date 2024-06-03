@@ -28,7 +28,7 @@ public func makeSingleWindow<V:View>(title: String,
                               rect:NSRect = defaultRect,
                               content: @escaping () -> V) -> SingleWindow {
     let window = SingleWindow(title: title, external:external, shortcutString:shortcutString, rect:rect)
-    window.myWin.contentView = NSHostingView(rootView: content())
+    window.myWin.contentView = SingleHostingView(rootView: content())
     return window
 }
 
@@ -114,6 +114,10 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     else {
       open()
     }
+  }
+
+  func toggleFullScreen() {
+    myWin.toggleFullScreen(nil)
   }
 }
 
