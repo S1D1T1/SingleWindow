@@ -104,6 +104,14 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     myWin.title = title
   }
 
+  public func toggleFullScreen() {
+    myWin.toggleFullScreen(nil)
+  }
+
+  public func isFullScreen() -> Bool {
+    myWin.styleMask.contains(.fullScreen)
+  }
+
   // MARK: Internal
 
   /// Toggles the visibility of the window.
@@ -123,10 +131,7 @@ public class SingleWindow : NSObject, NSWindowDelegate {
     }
   }
 
-  public func toggleFullScreen() {
-    myWin.toggleFullScreen(nil)
   }
-}
 
 ///  Creates  "Hide <Window Name> / Show <Window Name>" Menu items for toggling window visibility
 ///
