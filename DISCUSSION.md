@@ -20,4 +20,3 @@ SwiftUI/ MacOS doesn’t easily enable the window behavior of common mac apps li
 
 
 (I worked really hard not to make this a rant. how'd i do?)
-

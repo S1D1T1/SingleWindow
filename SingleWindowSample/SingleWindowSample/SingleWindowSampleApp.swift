@@ -43,6 +43,8 @@ struct SingleWindowSampleApp: App {
 
      My app hangs its .commands() block off of the "Settings" scene.
 
+     update: EmptyView() may be enough to satisfy App/Scene requirements. haven't tested
+
      */
 
 
