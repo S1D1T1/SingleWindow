@@ -187,7 +187,10 @@ struct SingleWindowListView : View {
 ///
 /// - Returns: An `NSWindow` instance.
 /// When you wanna get sh*t  done, AppKit
-func makeWindow(with title: String, external:Bool = false, rect:NSRect = defaultRect) -> NSWindow {
+func makeWindow(with title: String, 
+                external:Bool = false,
+                rect:NSRect = defaultRect,
+                onMouseDown:((_ :NSEvent)->Bool)? = nil) -> NSWindow {
     var destScreen:NSScreen
 
     let window = NSWindow(

@@ -15,7 +15,7 @@ public final class SingleHostingView<Content: View>: NSHostingView<Content> {
     fatalError("init(coder:) has not been implemented")
   }
 
-  init(onKey:@escaping ((_ :NSEvent)->Void),rootView: Content) {
+  init(onKey: ((_ :NSEvent)->Void)? = nil,rootView: Content) {
     self.onKey = onKey
     super.init(rootView: rootView)
   }
@@ -29,21 +29,5 @@ public final class SingleHostingView<Content: View>: NSHostingView<Content> {
       onKey(with)
     }
   }
-  /*
-   override func mouseDown(with event: NSEvent){
-   print("mouse")
-   }
-   override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
-   print("at least you asked")
-   return false
-   }
-
-   // caution this is called multiple times for a single click - or even for no click at all
-   override func  hitTest(_ point: NSPoint) -> NSView {
-   print("hitTest:\(point)")
-   //print("background: \(inBG)")
-   return self
-   }
-   */
+ 
 }
-
