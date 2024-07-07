@@ -195,7 +195,7 @@ func makeWindow(with title: String,
 
     let window = NSWindow(
         contentRect: NSRect(x: 0, y: 0, width: 0, height: 0),
-        styleMask: [.closable, .titled, .resizable],
+        styleMask: [.closable, .titled, .resizable,.miniaturizable],
         backing: .buffered,
         defer: false)
 
