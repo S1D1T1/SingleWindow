@@ -19,6 +19,7 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 - Menu command for toggling window visibility, with optional keyboard shortcuts
 - Option to create windows on external displays
 - Ability to identify the front window - eg, for directing menu commands
+- Optional Key event handler, which catches some keyDowns that get lost via the nuances of SwiftUI focus management
 
 ## Installation
 
@@ -52,6 +53,7 @@ let groovyClockWindow = makeSingleWindow(
 - `external:Bool` Optional boolean indicating whether the window should be opened on an external display, if available. default:false
 - `shortcutString:String` Optional string representing the keyboard shortcut for toggling the window visibility. default: no keyboard shortcut
 - `rect:NSRect` Optional initial rectangle for the window.
+- `onKey:((_ :NSEvent)->Bool)?` Optional key event handler
 - `content:() -> V` A closure returning your SwiftUI view to be hosted
 
 ### SingleWindow Public Properties
