@@ -4,6 +4,8 @@
 //
 // clean simple API, for normies
 //
+// ⓒ 2024 tafkad
+
 #if os(macOS)
 
 import Foundation

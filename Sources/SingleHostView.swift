@@ -3,6 +3,10 @@
 //  subclass NSHost
 //
 //
+// ⓒ 2024 tafkad
+
+
+// a NSHostingView subclass with a keydown override for use with SingleWindow
 
 import Foundation
 import SwiftUI
@@ -25,6 +29,9 @@ public final class SingleHostingView<Content: View>: NSHostingView<Content> {
   }
 
   public override func keyDown(with:NSEvent){
+
+    // we call your keyDown handler here. It must return a Bool indicating if the event was handled
+
     if let onKey,
        onKey(with){
       return
