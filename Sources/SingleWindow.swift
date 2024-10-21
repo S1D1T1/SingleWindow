@@ -38,6 +38,9 @@ public func makeSingleWindow<V:View>(title: String,
     window.myWin.contentView = NSHostingView(rootView: content())
 
   }
+  if !title.isEmpty {
+    window.myWin.setFrameUsingName(title)
+  }
   return window
 }
 
@@ -46,8 +49,7 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
 
 /// Implement an AppKit window for use in SwiftUI Projects
 /// This window hosts a SwiftUI View, but does *not* exist in the `Scene` Framework
-@Observable
-public class SingleWindow : NSObject, NSWindowDelegate {
+@Observable public class SingleWindow : NSObject, NSWindowDelegate {
   var title:String
   public var myWin:NSWindow
   var showString:String
@@ -155,6 +157,24 @@ public struct SingleWindowCommandGroup: Commands {
  class SingleWindowList {
     static var shared = SingleWindowList()
     var all:[SingleWindow] = []
+
+   private init(){
+
+     NotificationCenter.default.addObserver(self,
+                                            selector: #selector(saveWindowStates),
+                                            name: NSApplication.willTerminateNotification,
+                                            object: nil)
+
+
+   }
+
+   @objc private func saveWindowStates(_ notification: Notification) {
+     for window in all  where !window.title.isEmpty{
+         window.myWin.saveFrame(usingName: window.title)
+     }
+   }
+
+
 }
 
 /// A SwiftUI view that displays menu items for toggling the visibility of `SingleWindow` instances.
