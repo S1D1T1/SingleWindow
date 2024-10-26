@@ -29,10 +29,14 @@ public func makeSingleWindow<V:View>(title: String,
                                      shortcutString:String? = nil,
                                      rect:NSRect = defaultRect,
                                      onKey:((_ :NSEvent)->Bool)? = nil,
+                                     onScrollWheel:((_ :NSEvent)->Bool)? = nil,
                                      content: @escaping () -> V) -> SingleWindow {
   let window = SingleWindow(title: title, external:external, shortcutString:shortcutString, rect:rect)
   if let onKey {
-    window.myWin.contentView = SingleHostingView(onKey:onKey, rootView: content())
+    window.myWin.contentView = SingleHostingView(onKey:onKey, onScrollWheel:onScrollWheel, rootView: content())
+  }
+  else if let onScrollWheel {
+    window.myWin.contentView = SingleHostingView(onKey:onKey, onScrollWheel:onScrollWheel, rootView: content())
   }
   else {
     window.myWin.contentView = NSHostingView(rootView: content())
