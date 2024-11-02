@@ -36,7 +36,7 @@ public func makeSingleWindow<V:View>(title: String,
     window.myWin.contentView = SingleHostingView(onKey:onKey, onScrollWheel:onScrollWheel, rootView: content())
   }
   else if let onScrollWheel {
-    window.myWin.contentView = SingleHostingView(onKey:onKey, onScrollWheel:onScrollWheel, rootView: content())
+    window.myWin.contentView = SingleHostingView(onKey:nil, onScrollWheel:onScrollWheel, rootView: content())
   }
   else {
     window.myWin.contentView = NSHostingView(rootView: content())
@@ -168,8 +168,6 @@ public struct SingleWindowCommandGroup: Commands {
                                             selector: #selector(saveWindowStates),
                                             name: NSApplication.willTerminateNotification,
                                             object: nil)
-
-
    }
 
    @objc private func saveWindowStates(_ notification: Notification) {
