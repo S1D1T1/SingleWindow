@@ -28,8 +28,8 @@ public func makeSingleWindow<V:View>(title: String,
                                      external:Bool = false,
                                      shortcutString:String? = nil,
                                      rect:NSRect = defaultRect,
-                                     onKey:((_ :NSEvent)->Bool)? = nil,
-                                     onScrollWheel:((_ :NSEvent)->Bool)? = nil,
+                                     onKey:MainActorEventHandler? = nil,
+                                     onScrollWheel:MainActorEventHandler? = nil,
                                      content: @escaping () -> V) -> SingleWindow {
   let window = SingleWindow(title: title, external:external, shortcutString:shortcutString, rect:rect)
   if let onKey {

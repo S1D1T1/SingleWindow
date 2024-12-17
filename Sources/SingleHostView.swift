@@ -10,11 +10,12 @@
 
 import Foundation
 import SwiftUI
+public typealias MainActorEventHandler = (@MainActor (_: NSEvent) -> Bool)
 
 public final class SingleHostingView<Content: View>: NSHostingView<Content> {
 
-  public var onKey:((_ :NSEvent)->Bool)?
-  public var onScrollWheel:((_ :NSEvent)->Bool)?
+  public var onKey:MainActorEventHandler?
+  public var onScrollWheel:MainActorEventHandler?
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
