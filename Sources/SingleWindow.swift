@@ -43,7 +43,8 @@ public func makeSingleWindow<V:View>(title: String,
 
   }
   if !title.isEmpty {
-    window.myWin.setFrameUsingName(title)
+  //  window.myWin.setFrameUsingName(title)
+    window.myWin.restoreFrameToMatchingScreen(withName: title)
   }
   return window
 }
@@ -244,4 +245,58 @@ func makeWindow(with title: String,
     window.orderFront(nil)
     return window
 }
+
+
+extension NSWindow {
+  func restoreFrameToMatchingScreen(withName windowName: String) {
+    // First get the stored frame data
+    guard let frameData = UserDefaults.standard.string(forKey: "NSWindow Frame " + windowName) else {
+      return
+    }
+
+    let components = frameData.components(separatedBy: " ").compactMap { Double($0) }
+    guard components.count >= 8 else { return }
+
+    let storedWindowX = components[0]
+    let storedWindowY = components[1]
+    let storedWindowWidth = components[2]
+    let storedWindowHeight = components[3]
+    let storedScreenOriginX = components[4]
+    let storedScreenOriginY = components[5]
+    let storedScreenWidth = components[6]
+    let storedScreenHeight = components[7]
+
+    // Find the matching screen based on dimensions
+    let matchingScreen = NSScreen.screens.first { screen in
+      let fullFrame = screen.frame
+      // Use visibleFrame for height since that accounts for menu bar
+      let visibleFrame = screen.visibleFrame
+      return abs(fullFrame.width - storedScreenWidth) < 1 &&
+      abs(visibleFrame.height - storedScreenHeight) < 1 &&
+      abs(fullFrame.minX - storedScreenOriginX) < 1 &&
+      abs(visibleFrame.minY - storedScreenOriginY) < 1
+    }
+
+    if let targetScreen = matchingScreen {
+      // Calculate the new frame relative to the target screen
+      let newFrame = NSRect(
+        x: targetScreen.frame.minX + (storedWindowX - storedScreenOriginX),
+        y: targetScreen.frame.minY + (storedWindowY - storedScreenOriginY),
+        width: storedWindowWidth,
+        height: storedWindowHeight
+      )
+
+      // First call setFrameUsingName to restore other window properties
+      self.setFrameUsingName(windowName)
+
+      // Then adjust the frame to the correct screen
+      self.setFrame(newFrame, display: true)
+    } else {
+      // Fallback to standard restoration if we can't find the matching screen
+      self.setFrameUsingName(windowName)
+    }
+  }
+}
+
+
 #endif  //  macos
