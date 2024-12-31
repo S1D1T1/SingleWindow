@@ -7,6 +7,7 @@
 
 
 // a NSHostingView subclass with a keydown override for use with SingleWindow
+#if os(macOS)
 
 import Foundation
 import SwiftUI
@@ -49,5 +50,6 @@ public final class SingleHostingView<Content: View>: NSHostingView<Content> {
     }
     super.keyDown(with: with)
   }
- 
+
 }
+#endif
