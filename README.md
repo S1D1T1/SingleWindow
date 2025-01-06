@@ -13,15 +13,18 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 
 - Create persistent windows for SwiftUI views
 - Programmatically open or close windows
+- Restore windows to their locations from previous app run - keyed on window name.
+    - also attempts to restore to the screen that window was on, if it is found
 - Programmatic control of window zooming
 - Access to the underlying AppKit `NSWindow` object
 - Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
 - Menu command for toggling window visibility, with optional keyboard shortcuts
 - Option to create windows on external displays
 - Auto save/restore window positions
-- Scroll Wheel handler 
 - Ability to identify the front window - eg, for directing menu commands
-- Optional Key event handler, which catches some keyDowns that get lost via the nuances of SwiftUI focus management
+- Some Event handling which requires NSHostView
+    - Scroll Wheel handler 
+    - Optional Key event handler, which catches some keyDowns that get lost via the nuances of SwiftUI focus management
 
 ## Installation
 
@@ -56,6 +59,7 @@ let groovyClockWindow = makeSingleWindow(
 - `shortcutString:String` Optional string representing the keyboard shortcut for toggling the window visibility. default: no keyboard shortcut
 - `rect:NSRect` Optional initial rectangle for the window.
 - `onKey:((_ :NSEvent)->Bool)?` Optional key event handler
+- `onScroll:((_ :NSEvent)->Bool)?` Optional scroll event handler
 - `content:() -> V` A closure returning your SwiftUI view to be hosted
 
 ### SingleWindow Public Properties
@@ -66,7 +70,8 @@ let groovyClockWindow = makeSingleWindow(
 ### SingleWindow Public Methods
 
 - `open()`: Opens the window.
-- `close()`: Closes the window.
+- `close()`: Closes the window.  
+  *Note* open/close do not dispose of the window or any contents, they just hide. This will not generate .onAppear messages in your SwiftUI Views.
 - `setWindowTitle(_:String)`: Sets the title of the window.
 
 ### SingleWindowCommandGroup: Install Menu Commands
