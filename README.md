@@ -23,6 +23,7 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 - Option to create windows on external displays
 - Auto save/restore window positions
 - Ability to identify the front window - eg, for directing menu commands
+- Option to create floating utility window which stays above other windows
 - Some Event handling which requires NSHostView
     - Scroll Wheel handler 
     - Optional Key event handler, which catches some keyDowns that get lost via the nuances of SwiftUI focus management
