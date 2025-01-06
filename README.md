@@ -19,6 +19,7 @@ Use SingleWindow for a "dashboard" type window that you need exactly one of, who
 - Access to the underlying AppKit `NSWindow` object
 - Support for multiple SingleWindow instances (1 dashboard, 1 clock,etc)
 - Menu command for toggling window visibility, with optional keyboard shortcuts
+    - Menu item is correctly titled "Hide <yourWin>" or "Show <yourWin>" based on its visibility.
 - Option to create windows on external displays
 - Auto save/restore window positions
 - Ability to identify the front window - eg, for directing menu commands
