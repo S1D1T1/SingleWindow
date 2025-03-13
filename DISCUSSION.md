@@ -17,6 +17,3 @@ SwiftUI/ MacOS doesn’t easily enable the window behavior of common mac apps li
 - Having exactly one - Using Window() Scene allows multiple, and very difficult to enforce this.
 - WindowDelegate functions
 
-
-
-(I worked really hard not to make this a rant. how'd i do?)
