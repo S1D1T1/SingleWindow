@@ -30,8 +30,17 @@ public func makeSingleWindow<V:View>(title: String,
                                      rect:NSRect = defaultRect,
                                      onKey:MainActorEventHandler? = nil,
                                      onScrollWheel:MainActorEventHandler? = nil,
+                                     onMinimize: (() -> Void)? = nil,
+                                     onRestore: (() -> Void)? = nil,
                                      content: @escaping () -> V) -> SingleWindow {
-  let window = SingleWindow(title: title, external:external, shortcutString:shortcutString, rect:rect)
+  let window = SingleWindow(
+    title: title,
+    external:external,
+    shortcutString:shortcutString,
+    rect:rect,
+    onMinimize: onMinimize,
+    onRestore: onRestore
+  )
   if let onKey {
     window.myWin.contentView = SingleHostingView(onKey:onKey, onScrollWheel:onScrollWheel, rootView: content())
   }
@@ -61,6 +70,8 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
   var hideString:String
   public var isOpen = false
   var shortcut:KeyEquivalent?
+  var onMinimize: (() -> Void)?
+  var onRestore: (() -> Void)?
 
   /// Initializes a new instance of the `SingleWindow` class.
   ///
@@ -69,12 +80,21 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
   ///   - external: If `true`, the window is placed on the external screen if one exists. Default is `false`.
   ///   - shortcutString: A one-character string representing the keyboard shortcut for toggling the window visibility via the menu item. Default is `nil`.
   ///   - rect: The bounding rectangle for the window. Default is `defaultRect`.
-  init(title: String, external:Bool = false, shortcutString:String? = nil, rect:NSRect = defaultRect) {
+  init(
+    title: String,
+    external:Bool = false,
+    shortcutString:String? = nil,
+    rect:NSRect = defaultRect,
+    onMinimize: (() -> Void)? = nil,
+    onRestore: (() -> Void)? = nil
+  ) {
     self.title = title
     self.showString = "Show \(title)" //  this actually prevents memory leaks, compared to generating dynamically
     self.hideString = "Hide \(title)" //
     self.myWin = makeWindow(with: title, external:external, rect: rect)
     self.isOpen = true
+    self.onMinimize = onMinimize
+    self.onRestore = onRestore
     if let firstchar = shortcutString?.first {
       self.shortcut = KeyEquivalent(firstchar)
     }
@@ -89,6 +109,18 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
   /// - Parameter notification: The notification object containing information about the close action.
   public func windowWillClose(_ notification: Notification) {
     close()
+  }
+
+  public func windowDidMiniaturize(_ notification: Notification) {
+    if let onMinimize {
+      onMinimize()
+    }
+  }
+
+  public func windowDidDeminiaturize(_ notification: Notification) {
+    if let onRestore {
+      onRestore()
+    }
   }
 
   // MARK: Public API
@@ -121,9 +153,7 @@ public let defaultRect = NSRect(x: 200, y: 200, width: 620, height: 615)
     myWin.styleMask.contains(.fullScreen)
   }
 
-  // MARK: Internal
-
-  /// Toggles the visibility of the window.
+    /// Toggles the visibility of the window.
   /// this presumes its in sync with menu title
   /// One subtle behavior , of debatable value:
   ///     if window is visible, but not in front, then bring it front. ie, not strictly a visibility toggle
